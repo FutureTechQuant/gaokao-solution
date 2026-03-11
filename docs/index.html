@@ -5,82 +5,317 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>掌上高考公开数据镜像</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 1100px; margin: 24px auto; padding: 0 16px; }
-    input { width: 100%; padding: 10px 12px; font-size: 16px; }
-    .grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin: 16px 0; }
-    .card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; }
-    .item { border-bottom: 1px solid #eee; padding: 12px 0; }
-    .muted { color: #666; font-size: 14px; }
-    a { word-break: break-all; }
-    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2,1fr); } }
+    :root {
+      --bg: #f7f8fa;
+      --card: #ffffff;
+      --text: #1f2328;
+      --muted: #59636e;
+      --line: #d0d7de;
+      --accent: #0969da;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+    }
+    p {
+      line-height: 1.6;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      word-break: break-all;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .toolbar {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 18px 0;
+    }
+    .download {
+      margin: 10px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .download a {
+      display: inline-block;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+    input, select {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      font-size: 15px;
+      background: #fff;
+    }
+    .filters {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      margin: 18px 0;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+    .card .num {
+      margin-top: 8px;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .type-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 13px;
+    }
+    .results {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .item {
+      padding: 14px 0;
+      border-bottom: 1px solid #eef1f4;
+    }
+    .item:last-child {
+      border-bottom: 0;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 6px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .snippet {
+      margin-top: 8px;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .footer-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .filters {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>掌上高考公开数据镜像</h1>
-  <p class="muted">
-    数据文件：
-    <a href="./data/pages.jsonl.gz">pages.jsonl.gz</a> |
-    <a href="./data/tables.jsonl.gz">tables.jsonl.gz</a> |
-    <a href="./data/links.jsonl.gz">links.jsonl.gz</a>
-  </p>
+  <div class="wrap">
+    <h1>掌上高考公开数据镜像</h1>
+    <p class="muted">公开页面索引、表格抽取、站内链接关系与 HTML 快照。</p>
 
-  <input id="q" placeholder="搜索标题、简介、正文片段…" />
+    <div class="toolbar">
+      <div class="download">
+        <a href="./data/pages.jsonl.gz">pages.jsonl.gz</a>
+        <a href="./data/tables.jsonl.gz">tables.jsonl.gz</a>
+        <a href="./data/links.jsonl.gz">links.jsonl.gz</a>
+        <a href="./data/jsonld.jsonl.gz">jsonld.jsonl.gz</a>
+      </div>
 
-  <div class="grid" id="stats"></div>
-  <div id="results"></div>
+      <div class="filters">
+        <input id="q" type="text" placeholder="搜索标题、简介、正文片段、URL…" />
+        <select id="typeFilter">
+          <option value="">全部类型</option>
+        </select>
+      </div>
+      <div class="footer-note">提示：点击“快照”会打开已发布到 GitHub Pages 的 HTML 文件。</div>
+    </div>
+
+    <div class="grid" id="stats"></div>
+
+    <div class="card">
+      <div>类型分布</div>
+      <div class="type-list" id="typeList"></div>
+    </div>
+
+    <div class="results">
+      <div class="muted" id="resultInfo">加载中…</div>
+      <div id="results"></div>
+    </div>
+  </div>
 
   <script>
     const statsEl = document.getElementById('stats');
+    const typeListEl = document.getElementById('typeList');
     const resultsEl = document.getElementById('results');
+    const resultInfoEl = document.getElementById('resultInfo');
     const qEl = document.getElementById('q');
-    let rows = [];
+    const typeFilterEl = document.getElementById('typeFilter');
 
-    function renderStats(stats) {
-      const items = [
-        ['本次写入页面', stats.summary.pages_written],
-        ['累计已发现', stats.summary.seen_total],
-        ['抽取表格数', stats.table_count],
-        ['待探索链接', stats.summary.frontier_remaining],
-      ];
-      statsEl.innerHTML = items.map(([k,v]) => `<div class="card"><div>${k}</div><h2>${v}</h2></div>`).join('');
+    let rows = [];
+    let filteredRows = [];
+    let statsData = null;
+
+    function escapeHtml(str) {
+      return (str || '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
     }
 
-    function render(list) {
-      resultsEl.innerHTML = list.slice(0, 200).map(x => `
-        <div class="item">
-          <div><strong>${x.title || '(无标题)'}</strong></div>
-          <div class="muted">类型：${x.type}</div>
-          <div><a href="${x.url}" target="_blank">${x.url}</a></div>
-          <div class="muted">${x.meta_description || ''}</div>
-          <div>${x.text_snippet || ''}</div>
-          <div class="muted">快照：<a href="../${x.html_snapshot}" target="_blank">${x.html_snapshot}</a></div>
+    function renderStats(stats) {
+      const cards = [
+        ['本次写入页面', stats.summary.pages_written ?? 0],
+        ['累计已发现', stats.summary.seen_total ?? 0],
+        ['抽取表格数', stats.table_count ?? 0],
+        ['待探索链接', stats.summary.frontier_remaining ?? 0],
+        ['JSON-LD 数', stats.jsonld_count ?? 0],
+      ];
+      statsEl.innerHTML = cards.map(([k, v]) => `
+        <div class="card">
+          <div>${escapeHtml(String(k))}</div>
+          <div class="num">${escapeHtml(String(v))}</div>
         </div>
       `).join('');
     }
 
-    async function boot() {
-      const [stats, index] = await Promise.all([
-        fetch('./data/stats.json').then(r => r.json()),
-        fetch('./data/search-index.json').then(r => r.json()),
-      ]);
-      rows = index;
-      renderStats(stats);
-      render(rows);
+    function renderTypeList(typeCount) {
+      const entries = Object.entries(typeCount || {}).sort((a, b) => b[1] - a[1]);
+      typeListEl.innerHTML = entries.map(([k, v]) =>
+        `<span class="badge">${escapeHtml(k)}：${escapeHtml(String(v))}</span>`
+      ).join('');
+
+      typeFilterEl.innerHTML = '<option value="">全部类型</option>' + entries.map(([k]) =>
+        `<option value="${escapeHtml(k)}">${escapeHtml(k)}</option>`
+      ).join('');
     }
 
-    qEl.addEventListener('input', () => {
-      const q = qEl.value.trim().toLowerCase();
-      if (!q) return render(rows);
-      const filtered = rows.filter(x =>
-        (x.title || '').toLowerCase().includes(q) ||
-        (x.meta_description || '').toLowerCase().includes(q) ||
-        (x.text_snippet || '').toLowerCase().includes(q) ||
-        (x.url || '').toLowerCase().includes(q)
-      );
-      render(filtered);
-    });
+    function renderResults(list) {
+      resultInfoEl.textContent = `共 ${list.length} 条匹配结果，当前最多展示前 200 条。`;
 
-    boot();
+      resultsEl.innerHTML = list.slice(0, 200).map(x => {
+        const title = x.title || '(无标题)';
+        const type = x.type || 'page';
+        const url = x.url || '';
+        const meta = x.meta_description || '';
+        const snippet = x.text_snippet || '';
+        const htmlSnapshot = x.html_snapshot || '';
+        const publishedTime = x.published_time || '';
+        const encodingUsed = x.encoding_used || '';
+
+        return `
+          <div class="item">
+            <div class="title">${escapeHtml(title)}</div>
+            <div class="meta">
+              <span>类型：${escapeHtml(type)}</span>
+              ${publishedTime ? `<span>发布时间：${escapeHtml(publishedTime)}</span>` : ''}
+              ${encodingUsed ? `<span>编码：${escapeHtml(encodingUsed)}</span>` : ''}
+            </div>
+            <div><a href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a></div>
+            ${meta ? `<div class="muted" style="margin-top:6px;">${escapeHtml(meta)}</div>` : ''}
+            ${snippet ? `<div class="snippet">${escapeHtml(snippet)}</div>` : ''}
+            ${htmlSnapshot ? `<div class="muted" style="margin-top:8px;">快照：<a href="./${escapeHtml(htmlSnapshot)}" target="_blank" rel="noopener noreferrer">${escapeHtml(htmlSnapshot)}</a></div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function applyFilters() {
+      const q = qEl.value.trim().toLowerCase();
+      const type = typeFilterEl.value.trim();
+
+      filteredRows = rows.filter(x => {
+        if (type && (x.type || '') !== type) return false;
+        if (!q) return true;
+
+        const haystack = [
+          x.title || '',
+          x.url || '',
+          x.meta_description || '',
+          x.text_snippet || '',
+          x.type || '',
+        ].join('\n').toLowerCase();
+
+        return haystack.includes(q);
+      });
+
+      renderResults(filteredRows);
+    }
+
+    async function boot() {
+      const [stats, index] = await Promise.all([
+        fetch('./data/stats.json', { cache: 'no-store' }).then(r => r.json()),
+        fetch('./data/search-index.json', { cache: 'no-store' }).then(r => r.json()),
+      ]);
+
+      statsData = stats;
+      rows = index;
+
+      renderStats(statsData);
+      renderTypeList(statsData.type_count || {});
+      applyFilters();
+    }
+
+    qEl.addEventListener('input', applyFilters);
+    typeFilterEl.addEventListener('change', applyFilters);
+
+    boot().catch(err => {
+      resultInfoEl.textContent = '加载失败：' + err;
+    });
   </script>
 </body>
 </html>

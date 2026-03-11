@@ -1,0 +1,20 @@
+{
+  "summary": {
+    "processed_this_run": 2500,
+    "seen_total": 2500,
+    "frontier_remaining": 6115,
+    "pages_written": 1911,
+    "tables_written": 1936,
+    "links_written": 77774
+  },
+  "type_count": {
+    "school": 38,
+    "major": 1,
+    "guide": 20,
+    "program": 42,
+    "page": 1688,
+    "news": 122
+  },
+  "page_count": 1911,
+  "table_count": 1936
+}

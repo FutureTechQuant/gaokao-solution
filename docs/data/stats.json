@@ -1,19 +1,22 @@
 {
   "summary": {
     "processed_this_run": 2500,
-    "seen_total": 5000,
-    "frontier_remaining": 7054,
-    "pages_written": 1753,
-    "tables_written": 544,
-    "links_written": 61271
+    "seen_total": 9611,
+    "frontier_remaining": 5238,
+    "pages_written": 2500,
+    "tables_written": 1037,
+    "links_written": 86093,
+    "jsonld_written": 0
   },
   "type_count": {
-    "page": 1532,
-    "news": 148,
-    "guide": 24,
-    "school": 14,
-    "program": 35
+    "page": 2335,
+    "news": 134,
+    "school": 17,
+    "guide": 9,
+    "program": 5
   },
-  "page_count": 1753,
-  "table_count": 544
+  "page_count": 2500,
+  "table_count": 1037,
+  "link_count": 86093,
+  "jsonld_count": 0
 }

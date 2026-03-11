@@ -1,8 +1,9 @@
 {
   "processed_this_run": 2500,
-  "seen_total": 5000,
-  "frontier_remaining": 7054,
-  "pages_written": 1753,
-  "tables_written": 544,
-  "links_written": 61271
+  "seen_total": 9611,
+  "frontier_remaining": 5238,
+  "pages_written": 2500,
+  "tables_written": 1037,
+  "links_written": 86093,
+  "jsonld_written": 0
 }

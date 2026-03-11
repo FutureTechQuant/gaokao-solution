@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>掌上高考公开数据镜像</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+    input { width: 100%; padding: 10px 12px; font-size: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin: 16px 0; }
+    .card { border: 1px solid #ddd; border-radius: 10px; padding: 12px; }
+    .item { border-bottom: 1px solid #eee; padding: 12px 0; }
+    .muted { color: #666; font-size: 14px; }
+    a { word-break: break-all; }
+    @media (max-width: 900px) { .grid { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+  <h1>掌上高考公开数据镜像</h1>
+  <p class="muted">
+    数据文件：
+    <a href="./data/pages.jsonl.gz">pages.jsonl.gz</a> |
+    <a href="./data/tables.jsonl.gz">tables.jsonl.gz</a> |
+    <a href="./data/links.jsonl.gz">links.jsonl.gz</a>
+  </p>
+
+  <input id="q" placeholder="搜索标题、简介、正文片段…" />
+
+  <div class="grid" id="stats"></div>
+  <div id="results"></div>
+
+  <script>
+    const statsEl = document.getElementById('stats');
+    const resultsEl = document.getElementById('results');
+    const qEl = document.getElementById('q');
+    let rows = [];
+
+    function renderStats(stats) {
+      const items = [
+        ['本次写入页面', stats.summary.pages_written],
+        ['累计已发现', stats.summary.seen_total],
+        ['抽取表格数', stats.table_count],
+        ['待探索链接', stats.summary.frontier_remaining],
+      ];
+      statsEl.innerHTML = items.map(([k,v]) => `<div class="card"><div>${k}</div><h2>${v}</h2></div>`).join('');
+    }
+
+    function render(list) {
+      resultsEl.innerHTML = list.slice(0, 200).map(x => `
+        <div class="item">
+          <div><strong>${x.title || '(无标题)'}</strong></div>
+          <div class="muted">类型：${x.type}</div>
+          <div><a href="${x.url}" target="_blank">${x.url}</a></div>
+          <div class="muted">${x.meta_description || ''}</div>
+          <div>${x.text_snippet || ''}</div>
+          <div class="muted">快照：<a href="../${x.html_snapshot}" target="_blank">${x.html_snapshot}</a></div>
+        </div>
+      `).join('');
+    }
+
+    async function boot() {
+      const [stats, index] = await Promise.all([
+        fetch('./data/stats.json').then(r => r.json()),
+        fetch('./data/search-index.json').then(r => r.json()),
+      ]);
+      rows = index;
+      renderStats(stats);
+      render(rows);
+    }
+
+    qEl.addEventListener('input', () => {
+      const q = qEl.value.trim().toLowerCase();
+      if (!q) return render(rows);
+      const filtered = rows.filter(x =>
+        (x.title || '').toLowerCase().includes(q) ||
+        (x.meta_description || '').toLowerCase().includes(q) ||
+        (x.text_snippet || '').toLowerCase().includes(q) ||
+        (x.url || '').toLowerCase().includes(q)
+      );
+      render(filtered);
+    });
+
+    boot();
+  </script>
+</body>
+</html>

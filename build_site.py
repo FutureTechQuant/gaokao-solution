@@ -33,7 +33,7 @@ def gzip_copy(src: Path, dst: Path):
         shutil.copyfileobj(f_in, f_out)
 
 
-def safe_unlink_children(dir_path: Path):
+def clear_dir_files(dir_path: Path):
     if not dir_path.exists():
         return
     for item in dir_path.iterdir():
@@ -45,6 +45,11 @@ pages = read_jsonl(LATEST / "pages.jsonl")
 tables = read_jsonl(LATEST / "tables.jsonl")
 links = read_jsonl(LATEST / "links.jsonl")
 jsonld = read_jsonl(LATEST / "jsonld.jsonl")
+schools = read_jsonl(LATEST / "schools.jsonl")
+majors = read_jsonl(LATEST / "majors.jsonl")
+scores = read_jsonl(LATEST / "scores.jsonl")
+major_scores = read_jsonl(LATEST / "major_scores.jsonl")
+news = read_jsonl(LATEST / "news.jsonl")
 
 summary_path = LATEST / "summary.json"
 if summary_path.exists():
@@ -58,6 +63,11 @@ else:
         "tables_written": len(tables),
         "links_written": len(links),
         "jsonld_written": len(jsonld),
+        "schools_written": len(schools),
+        "majors_written": len(majors),
+        "scores_written": len(scores),
+        "major_scores_written": len(major_scores),
+        "news_written": len(news),
     }
 
 type_count: dict[str, int] = {}
@@ -85,6 +95,11 @@ stats = {
     "table_count": len(tables),
     "link_count": len(links),
     "jsonld_count": len(jsonld),
+    "school_count": len(schools),
+    "major_count": len(majors),
+    "score_count": len(scores),
+    "major_score_count": len(major_scores),
+    "news_count": len(news),
 }
 
 (DOCS_DATA / "search-index.json").write_text(
@@ -96,20 +111,48 @@ stats = {
     encoding="utf-8"
 )
 
-# 复制 HTML 快照到 Pages 可发布目录
-safe_unlink_children(DOCS_HTML)
+(DOCS_DATA / "schools.json").write_text(
+    json.dumps(schools[:2000], ensure_ascii=False, indent=2),
+    encoding="utf-8"
+)
+(DOCS_DATA / "majors.json").write_text(
+    json.dumps(majors[:2000], ensure_ascii=False, indent=2),
+    encoding="utf-8"
+)
+(DOCS_DATA / "scores.json").write_text(
+    json.dumps(scores[:2000], ensure_ascii=False, indent=2),
+    encoding="utf-8"
+)
+(DOCS_DATA / "major_scores.json").write_text(
+    json.dumps(major_scores[:2000], ensure_ascii=False, indent=2),
+    encoding="utf-8"
+)
+(DOCS_DATA / "news.json").write_text(
+    json.dumps(news[:2000], ensure_ascii=False, indent=2),
+    encoding="utf-8"
+)
+
+clear_dir_files(DOCS_HTML)
 src_html = LATEST / "html"
 if src_html.exists():
     for f in src_html.glob("*.html"):
         shutil.copy2(f, DOCS_HTML / f.name)
 
-# 压缩导出原始数据
-for name in ["pages.jsonl", "tables.jsonl", "links.jsonl", "jsonld.jsonl"]:
+for name in [
+    "pages.jsonl",
+    "tables.jsonl",
+    "links.jsonl",
+    "jsonld.jsonl",
+    "schools.jsonl",
+    "majors.jsonl",
+    "scores.jsonl",
+    "major_scores.jsonl",
+    "news.jsonl",
+]:
     src = LATEST / name
     if src.exists():
         gzip_copy(src, DOCS_DATA / f"{name}.gz")
 
-# 额外输出一个轻量首页数据，便于前端直接渲染
 latest_pages = sorted(
     pages,
     key=lambda x: (x.get("published_time") or "", x.get("title") or ""),
@@ -121,5 +164,4 @@ latest_pages = sorted(
     encoding="utf-8"
 )
 
-# 避免 Jekyll 干预静态资源路径
 (DOCS / ".nojekyll").write_text("", encoding="utf-8")

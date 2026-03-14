@@ -1,22 +1,32 @@
 {
   "summary": {
     "processed_this_run": 2500,
-    "seen_total": 9611,
-    "frontier_remaining": 5238,
-    "pages_written": 2500,
-    "tables_written": 1037,
-    "links_written": 86093,
-    "jsonld_written": 0
+    "seen_total": 14030,
+    "frontier_remaining": 3894,
+    "pages_written": 1028,
+    "tables_written": 474,
+    "links_written": 40423,
+    "jsonld_written": 0,
+    "schools_written": 214,
+    "majors_written": 77,
+    "scores_written": 841,
+    "major_scores_written": 12,
+    "news_written": 436
   },
   "type_count": {
-    "page": 2335,
-    "news": 134,
-    "school": 17,
-    "guide": 9,
-    "program": 5
+    "page": 460,
+    "school": 13,
+    "news": 436,
+    "score": 58,
+    "guide": 61
   },
-  "page_count": 2500,
-  "table_count": 1037,
-  "link_count": 86093,
-  "jsonld_count": 0
+  "page_count": 1028,
+  "table_count": 474,
+  "link_count": 40423,
+  "jsonld_count": 0,
+  "school_count": 214,
+  "major_count": 77,
+  "score_count": 841,
+  "major_score_count": 12,
+  "news_count": 436
 }

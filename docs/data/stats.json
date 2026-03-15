@@ -1,33 +1,33 @@
 {
   "summary": {
     "processed_this_run": 2500,
-    "seen_total": 18747,
-    "frontier_remaining": 3733,
-    "pages_written": 1390,
-    "tables_written": 1204,
-    "links_written": 74191,
+    "seen_total": 23572,
+    "frontier_remaining": 3027,
+    "pages_written": 1803,
+    "tables_written": 2220,
+    "links_written": 110751,
     "jsonld_written": 0,
-    "schools_written": 270,
-    "majors_written": 72,
-    "scores_written": 1354,
-    "major_scores_written": 4,
-    "news_written": 365
+    "schools_written": 316,
+    "majors_written": 75,
+    "scores_written": 3081,
+    "major_scores_written": 10,
+    "news_written": 367
   },
   "type_count": {
-    "page": 915,
-    "news": 365,
-    "guide": 23,
-    "score": 59,
-    "school": 21,
-    "program": 7
+    "page": 1253,
+    "news": 367,
+    "score": 92,
+    "guide": 35,
+    "program": 10,
+    "school": 46
   },
-  "page_count": 1390,
-  "table_count": 1204,
-  "link_count": 74191,
+  "page_count": 1803,
+  "table_count": 2220,
+  "link_count": 110751,
   "jsonld_count": 0,
-  "school_count": 270,
-  "major_count": 72,
-  "score_count": 1354,
-  "major_score_count": 4,
-  "news_count": 365
+  "school_count": 316,
+  "major_count": 75,
+  "score_count": 3081,
+  "major_score_count": 10,
+  "news_count": 367
 }

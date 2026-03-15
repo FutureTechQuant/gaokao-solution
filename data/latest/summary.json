@@ -1,14 +1,14 @@
 {
   "processed_this_run": 2500,
-  "seen_total": 18747,
-  "frontier_remaining": 3733,
-  "pages_written": 1390,
-  "tables_written": 1204,
-  "links_written": 74191,
+  "seen_total": 23572,
+  "frontier_remaining": 3027,
+  "pages_written": 1803,
+  "tables_written": 2220,
+  "links_written": 110751,
   "jsonld_written": 0,
-  "schools_written": 270,
-  "majors_written": 72,
-  "scores_written": 1354,
-  "major_scores_written": 4,
-  "news_written": 365
+  "schools_written": 316,
+  "majors_written": 75,
+  "scores_written": 3081,
+  "major_scores_written": 10,
+  "news_written": 367
 }
